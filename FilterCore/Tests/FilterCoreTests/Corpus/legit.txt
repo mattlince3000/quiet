@@ -1,0 +1,24 @@
+# Texts that must never be filtered. One message per line.
+# One-time codes, banks, delivery, health, school, civic notices, and people.
+# Blank lines and lines starting with # are ignored.
+
+Your Chase verification code is 482913. Do not share it with anyone.
+936172 is your Amazon one-time password. Never share this code.
+Chase: A $412.55 charge was made at HOME DEPOT on your card ending 4417. If this wasn't you, reply NO. Reply STOP to opt out.
+USPS: Your package is out for delivery and will arrive today by 8pm. Track it at tools.usps.com/x
+Walgreens: Your prescription is ready for pickup at 1200 Main St. Reply STOP to stop texts.
+Dr. Patel's office: Reminder of your appointment on Tue Oct 7 at 2:15pm. Reply C to confirm or call to reschedule.
+Lincoln High School: Early dismissal today at 1:15pm due to weather. Buses will run on the adjusted schedule.
+Your DoorDash order from Thai Basil is arriving today at 6:42pm. Your driver is Luis.
+City Utilities: A power outage in your area is affecting 1,240 customers. Crews are on site. Estimated restoration 9pm.
+Board of Elections: Your polling place has moved to Roosevelt Elementary, 88 Grove St. Polls are open 6am-8pm. Reply STOP to end.
+Hey it's Jen from book club - we moved Thursday to 7:30. Same place!
+Wells Fargo: Your direct deposit of $2,140.00 has posted to your account ending 8891.
+Delta: Flight 1187 to ATL is delayed to 4:55pm. Your gate has changed to B12.
+Your Verizon bill of $89.42 is due on Oct 15. Autopay is on, no action needed. Reply STOP to opt out of alerts.
+Mom: can you grab milk on the way home? Also dad says call him
+Your appointment with Quest Diagnostics is confirmed for Thu at 8:00am. Please fast for 12 hours.
+Riverside Dental: You're due for a cleaning. Reply YES to schedule or STOP to end texts.
+Did you ever chip in for Kevin's going away gift? I put in $20 lol
+Your Uber is arriving now. Your driver Maria is in a gray Corolla.
+Costco: Your order #7741 is ready for pickup at the Membership counter until Sunday.

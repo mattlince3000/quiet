@@ -1,0 +1,14 @@
+--swiftversion 6.0
+--exclude .build,FilterCore/.build,Quiet.xcodeproj
+--maxwidth 120
+--wraparguments before-first
+--wrapparameters before-first
+--wrapcollections before-first
+--closingparen balanced
+--commas always
+--trimwhitespace always
+--indent 4
+--self remove
+--stripunusedargs closure-only
+--decimalgrouping 3,5
+--disable redundantReturn

@@ -1,0 +1,108 @@
+# SPEC §6 and the threat model table. The custom rules below are the enforcement
+# arm of "zero network, zero logging of message content, nothing unsafe".
+
+included:
+  - App
+  - FilterExtension
+  - Shared
+  - FilterCore/Sources
+  - FilterCore/Tests
+
+excluded:
+  - .build
+  - FilterCore/.build
+  - Quiet.xcodeproj
+
+opt_in_rules:
+  - force_unwrapping
+  - empty_count
+  - explicit_init
+  - first_where
+  - last_where
+  - contains_over_first_not_nil
+  - redundant_nil_coalescing
+  - unneeded_parentheses_in_closure_argument
+  - yoda_condition
+
+line_length:
+  warning: 140
+  error: 200
+  ignores_comments: false
+  ignores_urls: true
+
+file_length:
+  warning: 200
+  error: 200
+
+type_body_length:
+  warning: 180
+  error: 250
+
+function_body_length:
+  warning: 60
+  error: 80
+
+trailing_comma:
+  mandatory_comma: true
+
+identifier_name:
+  excluded: [id, re, x, y]
+
+custom_rules:
+  # --- Threat: text exfiltrates data. No network reach anywhere in the repo.
+  banned_network_api:
+    name: "Banned network API"
+    regex: '\b(URLSession|NSURLConnection|NWConnection|NWBrowser|CFSocket|Socket\(|deferQueryRequestToNetwork)\b'
+    message: "SPEC §6: this app has zero network code."
+    severity: error
+  banned_network_import:
+    name: "Banned network import"
+    regex: '^\s*import\s+(Network|CFNetwork|SystemConfiguration)\b'
+    message: "SPEC §6: this app has zero network code."
+    severity: error
+
+  # --- Threat: malicious text executes code or renders as markup.
+  banned_web_view:
+    name: "Banned web view"
+    regex: '\b(WKWebView|UIWebView|SFSafariViewController|JSContext|NSAttributedString\s*\(\s*html|documentType\s*:\s*\.html|dataDetectorTypes)\b'
+    message: "SPEC §6: message text is never rendered as markup or script."
+    severity: error
+  banned_unsafe_api:
+    name: "Banned unsafe API"
+    regex: '\b(Unsafe(Mutable)?(Raw)?(Buffer)?Pointer|unsafeBitCast|unsafeDowncast|@unchecked\s+Sendable|nonisolated\(unsafe\))\b'
+    message: "SPEC §6: no unsafe escapes; Swift's memory safety is part of the threat model."
+    severity: error
+
+  # --- Threat: the app itself becomes a data risk.
+  banned_pasteboard:
+    name: "Banned pasteboard"
+    regex: '\b(UIPasteboard|NSPasteboard)\b'
+    message: "SPEC §6: nothing leaves the process, including via the clipboard."
+    severity: error
+  banned_shared_defaults:
+    name: "Banned UserDefaults.standard"
+    regex: 'UserDefaults\.standard'
+    message: "SPEC §6: cross-target state lives only in the App Group suite."
+    severity: error
+  banned_url_open:
+    name: "Banned URL opening in the extension"
+    regex: '\b(UIApplication\.shared|openURL|open\(URL)'
+    message: "SPEC §6: the extension never opens a URL derived from message text."
+    severity: error
+    included: ".*/(FilterExtension|FilterCore/Sources)/.*"
+
+  # --- Never log sender or body.
+  banned_logging:
+    name: "Banned logging"
+    regex: '\b(print|debugPrint|dump|NSLog|os_log)\s*\('
+    message: "SPEC §6: never log message content. Add nothing here."
+    severity: error
+    included: ".*/(App|FilterExtension|Shared|FilterCore/Sources)/.*"
+
+  # --- CLAUDE.md hard rules.
+  banned_force_try:
+    name: "Banned force try"
+    regex: 'try!\s'
+    message: "CLAUDE.md: no try!."
+    severity: error
+    included: ".*/(App|FilterExtension|Shared|FilterCore/Sources)/.*"

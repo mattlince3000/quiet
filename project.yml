@@ -1,0 +1,109 @@
+name: Quiet
+
+options:
+  bundleIdPrefix: com.you
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+# SPEC §6: Swift 6 language mode, strict concurrency, warnings are errors,
+# everywhere, in both targets.
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    SWIFT_TREAT_WARNINGS_AS_ERRORS: YES
+    GCC_TREAT_WARNINGS_AS_ERRORS: YES
+    CLANG_ENABLE_MODULES: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    TARGETED_DEVICE_FAMILY: "1"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: ""
+
+packages:
+  FilterCore:
+    path: FilterCore
+
+targets:
+  # ---------------------------------------------------------------- app host
+  Quiet:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+      - path: Shared
+    dependencies:
+      - package: FilterCore
+        product: FilterCore
+      - target: QuietFilter
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.you.quiet
+        PRODUCT_NAME: Quiet
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Quiet
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        ITSAppUsesNonExemptEncryption: false
+        # iPhone-only and portrait-only, so declare full screen explicitly.
+        UIRequiresFullScreen: true
+        UILaunchScreen: {}
+        UIApplicationSupportsIndirectInputEvents: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+    entitlements:
+      path: App/Quiet.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.you.quiet
+
+  # -------------------------------------------------------- filter extension
+  QuietFilter:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: FilterExtension
+      - path: Shared
+    dependencies:
+      - package: FilterCore
+        product: FilterCore
+      - sdk: IdentityLookup.framework
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.you.quiet.filter
+        PRODUCT_NAME: QuietFilter
+    info:
+      path: FilterExtension/Info.plist
+      properties:
+        CFBundleDisplayName: Quiet Filter
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        # No ILMessageFilterExtensionNetworkURL key: SPEC §2 rules out
+        # deferQueryRequestToNetwork, so the extension never gets network reach.
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.identitylookup.message-filter
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).MessageFilterExtension
+    entitlements:
+      path: FilterExtension/QuietFilter.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.you.quiet
+
+schemes:
+  Quiet:
+    build:
+      targets:
+        Quiet: all
+        QuietFilter: all
+    run:
+      config: Debug
+    archive:
+      config: Release
