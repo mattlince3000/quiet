@@ -52,4 +52,11 @@ enum FundraisingDomains {
         "revv.co",
         "fundraiseup.com",
     ]
+
+    /// The subset safe to look for in whitespace-stripped text.
+    ///
+    /// "act.blue" and "win.red" are excluded: condensing turns an ordinary
+    /// sentence break like "time to act. Blue skies ahead" into "act.blue",
+    /// and this signal is worth 50 points — too heavy to risk on a coincidence.
+    static let condensable: [String] = all.filter { $0 != "act.blue" && $0 != "win.red" }
 }

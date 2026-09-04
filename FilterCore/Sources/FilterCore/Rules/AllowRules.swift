@@ -96,6 +96,7 @@ enum AllowRules {
     static let vetoes: [AllowVeto] = [
         // Nothing legitimate asks you to confirm a delivery at actblue.com.
         AllowVeto(id: "veto.processor", all: [.bodyPhrases(FundraisingDomains.all)]),
+        AllowVeto(id: "veto.processorSpaced", all: [.condensedPhrases(FundraisingDomains.condensable)]),
         // A direct second-person ask naming a dollar figure. "Can you chip in
         // $10" is a solicitation; "did you ever chip in for Kevin's gift" is a
         // friend, and does not match `directAsk`.

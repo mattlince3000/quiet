@@ -100,6 +100,14 @@ you for volunteering. Per CLAUDE.md the miss is the cheaper error. Pinned by
 
 Rules are data (a Swift array of `Rule { id, pattern, weight }`), not branching code, so Claude Code can add/tune without touching control flow.
 
+**Normalization:** before matching, every body is compatibility-folded (NFKC), stripped of zero-width
+and invisible scalars, and mapped through a Cyrillic/Greek confusables table. Folding runs over unicode
+*scalars*, not `Character`s — a zero-width joiner binds into the neighbouring grapheme cluster, so
+iterating by `Character` never sees it. Domain rules additionally match against a whitespace-stripped
+copy, catching `a c t b l u e . c o m`; short labels (`act.blue`, `win.red`) are excluded from that
+form because condensing welds an ordinary sentence break like "time to act. Blue skies" into a domain.
+Nothing else matches on the condensed copy — it would weld "chip in" into "chipin".
+
 **Regex safety:** every pattern is compiled once, statically; no nested quantifiers; input truncated to 1,000 chars before matching (ReDoS guard). A unit test runs every rule against a 10 KB adversarial string with a 50 ms timeout.
 
 **v2 (only if corpus shows rules plateau):** `MLTextClassifier` via Create ML trained on the corpus, bundled in the extension, used as one more weighted signal. Keep the model under a few MB.

@@ -3,12 +3,19 @@ import Foundation
 /// The money ask: where the donation goes, how you get off the list, and the
 /// urgency language used to produce the click.
 enum FundraisingRules {
-    /// A link to a political fundraising processor. Uncapped and heavy.
+    /// A link to a political fundraising processor, spelled plainly or spaced
+    /// out to dodge a literal match. The cap equals one hit: both rules describe
+    /// the same signal, so an obfuscated domain is not worth double.
     static let processors = RuleFamily(
         id: "processor",
-        cap: nil,
+        cap: 50,
         rules: [
             Rule(id: "processor.domain", weight: 50, matcher: .bodyPhrases(FundraisingDomains.all)),
+            Rule(
+                id: "processor.domainSpaced",
+                weight: 50,
+                matcher: .condensedPhrases(FundraisingDomains.condensable)
+            ),
         ]
     )
 

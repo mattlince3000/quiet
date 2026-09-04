@@ -3,15 +3,21 @@ import Foundation
 /// A normalized, length-bounded view of one inbound message.
 ///
 /// Everything a rule needs is computed once here so that matching stays linear
-/// in the body length no matter how many rules run.
+/// in the body length no matter how many rules run, and so that every rule sees
+/// the same folded text rather than each one re-deriving it.
 public struct Message: Sendable {
     /// ReDoS guard: bodies are truncated before any pattern ever sees them.
     public static let maxBodyLength = 1000
 
+    /// The sender as iOS gave it, folded. Treated as untrusted text.
     public let sender: String
+    /// The original body, truncated. This is what Test Lab displays.
     public let body: String
-    /// Lowercased `body`, for case-insensitive substring matchers.
+    /// Folded and lowercased. The form nearly every rule matches against.
     let lowercasedBody: String
+    /// `lowercasedBody` with all whitespace removed, so that "a c t b l u e . c o m"
+    /// matches a domain. Only domain matchers use it — see `Normalize.condense`.
+    let condensedBody: String
     /// Fraction of cased letters that are uppercase. Zero when there are no letters.
     let capsRatio: Double
     let exclamationCount: Int
@@ -20,15 +26,18 @@ public struct Message: Sendable {
     let containsOptOut: Bool
 
     public init(sender: String, body: String) {
-        self.sender = String(sender.prefix(Message.maxBodyLength))
+        self.sender = Normalize.fold(String(sender.prefix(Message.maxBodyLength)))
         let truncated = String(body.prefix(Message.maxBodyLength))
         self.body = truncated
-        lowercasedBody = truncated.lowercased()
+
+        let folded = Normalize.fold(truncated)
+        lowercasedBody = folded.lowercased()
+        condensedBody = Normalize.condense(lowercasedBody)
 
         var uppercase = 0
         var cased = 0
         var bangs = 0
-        for character in truncated {
+        for character in folded {
             if character == "!" {
                 bangs += 1
             }

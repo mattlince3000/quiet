@@ -30,6 +30,10 @@ struct Pattern: Sendable {
 enum Matcher: Sendable {
     /// Any of these lowercased substrings appears in the body.
     case bodyPhrases([String])
+    /// Any of these appears in the body once whitespace is removed, catching
+    /// "a c t b l u e . c o m". Only safe for strings that cannot occur across
+    /// an ordinary sentence break — see `FundraisingDomains.condensable`.
+    case condensedPhrases([String])
     /// The pattern matches the body.
     case bodyPattern(Pattern)
     /// The pattern matches the sender string.
@@ -41,6 +45,8 @@ enum Matcher: Sendable {
         switch self {
         case let .bodyPhrases(phrases):
             phrases.contains { message.lowercasedBody.contains($0) }
+        case let .condensedPhrases(phrases):
+            phrases.contains { message.condensedBody.contains($0) }
         case let .bodyPattern(pattern):
             pattern.matches(message.lowercasedBody)
         case let .senderPattern(pattern):
