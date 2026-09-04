@@ -17,6 +17,21 @@ enum Patterns {
             + #"|\bstop\s{0,3}(?:to|2)\s{0,3}(?:end|quit|opt|unsub|cancel|stop)"#
             + #"|\bstop2end\b|\bstop=end\b"#
     )
+
+    /// "chip in" / "pitch in".
+    static let chipIn = Pattern(#"\bchip(?:ping|ped)?\s{1,3}in\b|\bpitch\s{1,3}in\b"#)
+
+    /// A dollar figure.
+    static let amount = Pattern(#"\$\s?\d"#)
+
+    /// A direct, second-person request. Present tense and pointed at you, which
+    /// is what separates "can you chip in $10" from "did you chip in for the gift".
+    static let directAsk = Pattern(
+        #"\bcan you (?:help|chip|give|rush|donate|pitch|send)\b"#
+            + #"|\bwill you (?:help|chip|give|donate|stand)\b"#
+            + #"|\bhelp us (?:reach|hit|close|win|fight|beat|stop)\b"#
+            + #"|\bwe(?:'re| are)\s{1,3}(?:still\s{1,3})?(?:\d{1,6}|short|behind|running out)\b"#
+    )
 }
 
 /// Payment processors and voter-contact platforms used almost exclusively by

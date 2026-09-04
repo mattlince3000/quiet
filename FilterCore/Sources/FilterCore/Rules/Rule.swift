@@ -60,6 +60,8 @@ enum Shape: Sendable {
     /// Looks like a person typing: short, no link, no opt-out boilerplate.
     /// A fundraising blast has to get you somewhere, so it carries a link.
     case personal
+    /// Carries a link of any kind.
+    case linked
 
     func matches(_ message: Message) -> Bool {
         switch self {
@@ -69,6 +71,8 @@ enum Shape: Sendable {
             message.body.count > 120 && message.containsLink
         case .personal:
             !message.containsLink && !message.containsOptOut && message.body.count <= 160
+        case .linked:
+            message.containsLink
         }
     }
 }
@@ -100,6 +104,17 @@ struct RuleFamily: Sendable {
             total = min(total, cap)
         }
         return (total, fired)
+    }
+}
+
+/// A combination that disqualifies a message from the allow rules entirely.
+/// Every matcher in `all` must match for the veto to apply.
+struct AllowVeto: Sendable {
+    let id: String
+    let all: [Matcher]
+
+    func matches(_ message: Message) -> Bool {
+        all.allSatisfy { $0.matches(message) }
     }
 }
 

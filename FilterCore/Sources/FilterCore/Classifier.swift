@@ -18,7 +18,8 @@ public enum Classifier {
         let message = Message(sender: sender, body: body)
 
         // Allow rules first, so a one-time code never has to out-argue a score.
-        if config.allowsCodesAndAlerts, !RuleSet.allowVeto.matches(message) {
+        let vetoed = RuleSet.allowVetoes.contains { $0.matches(message) }
+        if config.allowsCodesAndAlerts, !vetoed {
             for rule in RuleSet.allowRules where rule.matcher.matches(message) {
                 return Verdict(action: rule.action, subAction: rule.subAction, firedRules: [rule.id])
             }

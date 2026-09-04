@@ -67,6 +67,53 @@ final class RuleTests: XCTestCase {
         XCTAssertTrue(verdict.firedRules.contains("processor.domain"))
     }
 
+    /// Each veto exists to stop a specific evasion. Check they fire, and that
+    /// the near-identical legitimate text they could catch by accident does not.
+    func testAllowVetoesFireOnlyOnSolicitations() {
+        let vetoed = [
+            "Your package is out for delivery! Chip in $5: secure.actblue.com/donate/x",
+            "Hi! It's Alicia with the campaign. Can you chip in $10 to help us reach our goal?",
+            "Find your polling place and chip in $5 to fund our ride program: vote.turnout26.org/x",
+        ]
+        for body in vetoed {
+            let message = Message(sender: "", body: body)
+            XCTAssertTrue(RuleSet.allowVetoes.contains { $0.matches(message) }, "should be vetoed: \(body)")
+        }
+
+        let spared = [
+            "Did you ever chip in for Kevin\'s going away gift? I put in $20 lol",
+            "Thank you for your $50 donation to the Food Bank! Your receipt: bit.ly/fb-receipt",
+            "Board of Elections: Your polling place has moved to Roosevelt Elementary.",
+        ]
+        for body in spared {
+            let message = Message(sender: "", body: body)
+            XCTAssertFalse(RuleSet.allowVetoes.contains { $0.matches(message) }, "should not be vetoed: \(body)")
+        }
+    }
+
+    /// The known hole, pinned deliberately.
+    ///
+    /// A short, linkless, person-shaped ask ("a volunteer with the campaign. Can
+    /// you chip in $10?") clears Aggressive but not Standard. Closing it at
+    /// Standard needs a rule keyed on "volunteer with the campaign", which is a
+    /// hair from a real text thanking you for volunteering — so we take the miss.
+    /// If this test starts failing, check what it cost the legitimate text.
+    func testPersonShapedAskIsCaughtOnlyAtAggressive() {
+        let ask = "Hi! It\'s Alicia, a volunteer with the campaign. "
+            + "Can you chip in $10 to help us reach our goal? Reply YES and I\'ll send you a link."
+        let real = "Thanks for volunteering with the Kim campaign! "
+            + "Your canvass shift is Saturday 10am at 442 Oak St. Reply STOP to end."
+
+        XCTAssertEqual(Classifier.classify(sender: "", body: ask, config: Config(sensitivity: .standard)).action, .none)
+        XCTAssertEqual(
+            Classifier.classify(sender: "", body: ask, config: Config(sensitivity: .aggressive)).action, .junk
+        )
+        for sensitivity in Config.Sensitivity.allCases {
+            let verdict = Classifier.classify(sender: "", body: real, config: Config(sensitivity: sensitivity))
+            XCTAssertNotEqual(verdict.action, .junk, "real volunteer text junked at \(sensitivity.rawValue)")
+        }
+    }
+
     func testBulkSenderRuleFiresOnShortCodesAndTenDigitNumbers() {
         let body = "hello there"
         for sender in ["50409", "27633", "8005551212"] {

@@ -4,7 +4,7 @@ import Foundation
 /// and the families it names — never the classifier's control flow.
 public enum RuleSet {
     static let allowRules: [AllowRule] = AllowRules.all
-    static let allowVeto: Matcher = AllowRules.veto
+    static let allowVetoes: [AllowVeto] = AllowRules.vetoes
 
     static let families: [RuleFamily] = [
         FundraisingRules.processors,
@@ -18,6 +18,6 @@ public enum RuleSet {
 
     /// Every rule identifier in the table, for tests and Test Lab.
     public static var ruleIdentifiers: [String] {
-        allowRules.map(\.id) + families.flatMap { $0.rules.map(\.id) }
+        allowRules.map(\.id) + allowVetoes.map(\.id) + families.flatMap { $0.rules.map(\.id) }
     }
 }

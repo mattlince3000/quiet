@@ -43,7 +43,8 @@ enum AllowRules {
                 "your balance", "available balance", "did you make this",
                 "did you authorize", "fraud alert", "was declined", "autopay",
                 "zelle", "payment posted", "payment is due", "statement is ready",
-                "overdraft", "deposited into",
+                "overdraft", "deposited into", "your receipt", "receipt for your",
+                "tax-deductible", "tax deductible",
             ])
         ),
         AllowRule(
@@ -86,9 +87,24 @@ enum AllowRules {
         ),
     ]
 
-    /// Allow rules do not apply to messages carrying a political fundraising
-    /// payment link. Nothing legitimate asks you to confirm a delivery at
-    /// actblue.com, so this closes the obvious evasion: wrap the ask in
-    /// service-alert phrasing.
-    static let veto = Matcher.bodyPhrases(FundraisingDomains.all)
+    /// Combinations that disqualify a message from the allow rules.
+    ///
+    /// Without these the allow rules are the obvious evasion: dress a donation
+    /// ask up as a service alert, a civic notice, or a note from a friend. Each
+    /// veto is deliberately narrow, because every one of them is a chance to
+    /// junk something real.
+    static let vetoes: [AllowVeto] = [
+        // Nothing legitimate asks you to confirm a delivery at actblue.com.
+        AllowVeto(id: "veto.processor", all: [.bodyPhrases(FundraisingDomains.all)]),
+        // A direct second-person ask naming a dollar figure. "Can you chip in
+        // $10" is a solicitation; "did you ever chip in for Kevin's gift" is a
+        // friend, and does not match `directAsk`.
+        AllowVeto(id: "veto.directAsk", all: [.bodyPattern(Patterns.directAsk), .bodyPattern(Patterns.amount)]),
+        // "Chip in $5" plus somewhere to go. The link is what makes it a blast
+        // rather than a person; a receipt or a friend's text has no ask-and-link.
+        AllowVeto(
+            id: "veto.linkedAsk",
+            all: [.bodyPattern(Patterns.chipIn), .bodyPattern(Patterns.amount), .shape(.linked)]
+        ),
+    ]
 }

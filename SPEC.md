@@ -74,9 +74,17 @@ Score = sum of rule weights; thresholds by sensitivity (Standard 60, Aggressive 
   blast has to get you somewhere, so it carries a link; a friend asking whether you chipped in for a
   co-worker's gift does not. This is what keeps ordinary texts out of the solicitation family's reach.
 
-**Allow veto:** a message carrying a fundraising processor domain skips the allow rules entirely.
-Nothing legitimate asks you to confirm a delivery at actblue.com, and without the veto the allow
-rules are the obvious evasion — wrap the ask in service-alert phrasing and walk through.
+**Allow veto:** three narrow combinations skip the allow rules entirely — a fundraising processor
+domain; a direct second-person ask naming a dollar figure ("can you chip in $10"); and "chip in $X"
+alongside a link. Without them the allow rules are the obvious evasion: dress the ask up as a service
+alert, a civic notice, or a note from a friend. Each veto is a chance to junk something real, so they
+stay narrow — "did you ever chip in for Kevin's gift? I put in $20" matches none of them.
+
+**Known miss (accepted):** a short, linkless, person-shaped ask — "a volunteer with the campaign.
+Can you chip in $10?" — scores 55 and so clears Aggressive but not Standard. Catching it at Standard
+needs a rule keyed on "volunteer with the campaign", a hair from the wording of a real text thanking
+you for volunteering. Per CLAUDE.md the miss is the cheaper error. Pinned by
+`testPersonShapedAskIsCaughtOnlyAtAggressive`.
 
 **Junk signals (weights are starting points; tune against corpus)**
 | Signal | Weight |

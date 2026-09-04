@@ -35,7 +35,7 @@ enum FundraisingRules {
             Rule(
                 id: "solicitation.chipIn",
                 weight: 15,
-                matcher: .bodyPattern(Pattern(#"\bchip(?:ping|ped)?\s{1,3}in\b|\bpitch\s{1,3}in\b"#))
+                matcher: .bodyPattern(Patterns.chipIn)
             ),
             Rule(
                 id: "solicitation.match",
@@ -57,7 +57,7 @@ enum FundraisingRules {
             Rule(
                 id: "solicitation.amount",
                 weight: 15,
-                matcher: .bodyPattern(Pattern(#"\$\s?\d"#))
+                matcher: .bodyPattern(Patterns.amount)
             ),
             Rule(
                 id: "solicitation.give",
@@ -71,12 +71,7 @@ enum FundraisingRules {
             Rule(
                 id: "solicitation.ask",
                 weight: 15,
-                matcher: .bodyPattern(Pattern(
-                    #"\bcan you (?:help|chip|give|rush|donate|pitch|send)\b"#
-                        + #"|\bwill you (?:help|chip|give|donate|stand)\b"#
-                        + #"|\bhelp us (?:reach|hit|close|win|fight|beat|stop)\b"#
-                        + #"|\bwe(?:'re| are)\s{1,3}(?:still\s{1,3})?(?:\d{1,6}|short|behind|running out)\b"#
-                ))
+                matcher: .bodyPattern(Patterns.directAsk)
             ),
         ]
     )
