@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiet — Privacy Policy</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    max-width: 42rem; margin: 0 auto; padding: 2rem 1.25rem 4rem;
+    font: 1rem/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  }
+  h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+  .sub { color: #666; margin-top: 0; }
+  h2 { font-size: 1.15rem; margin-top: 2rem; }
+  ul { padding-left: 1.25rem; }
+  li { margin: 0.35rem 0; }
+  footer { margin-top: 3rem; font-size: 0.875rem; color: #666; }
+  @media (prefers-color-scheme: dark) { .sub, footer { color: #999; } }
+</style>
+</head>
+<body>
+<h1>Privacy Policy for Quiet</h1>
+<p class="sub">Last updated: 4 September 2026</p>
+
+<p><strong>Quiet collects nothing.</strong> There is no account, no analytics, no advertising,
+and no server. The app has no networking code of any kind.</p>
+
+<h2>What Quiet does with your messages</h2>
+<p>When iOS receives a text from a number that is not in your contacts, it may pass the message
+text and the sender's number to Quiet's message filter extension. Quiet compares that text against
+a fixed list of patterns stored inside the app and returns a single decision to iOS: deliver the
+message normally, or place it in the Junk folder.</p>
+<ul>
+  <li>Message text exists only in memory, for the fraction of a second that decision takes.</li>
+  <li>Message text and sender numbers are never written to disk, never logged, and never transmitted.</li>
+  <li>Quiet cannot read messages from people in your contacts. iOS does not send them to filters.</li>
+  <li>Quiet has no access to your contacts, photos, location, or any other personal data.</li>
+</ul>
+
+<h2>What Quiet stores on your device</h2>
+<p>Quiet keeps a small amount of data in a shared container on your iPhone, so the app and its
+filter extension agree on your settings. It holds only:</p>
+<ul>
+  <li>Your sensitivity choice (Standard or Aggressive)</li>
+  <li>Whether "Always allow codes and alerts" is on</li>
+  <li>A count of messages filtered this week, and in total</li>
+  <li>The date the filter last ran</li>
+</ul>
+<p>No message content or sender information is included. Deleting the app deletes all of it.</p>
+
+<h2>Test Lab</h2>
+<p>The Test Lab screen lets you paste a message to see how Quiet would treat it. Text you paste
+there is not saved and not sent anywhere. It is discarded when you leave the screen.</p>
+
+<h2>Children</h2>
+<p>Quiet does not collect data from anyone, including children under 13.</p>
+
+<h2>Changes</h2>
+<p>If this policy ever changes, the updated version will be posted on this page with a new date.</p>
+
+<h2>Contact</h2>
+<p>Questions: <a href="mailto:matt.lince@gmail.com">matt.lince@gmail.com</a></p>
+
+<footer>Quiet is open source. The filtering rules and this policy can be read in full in the repository.</footer>
+</body>
+</html>
