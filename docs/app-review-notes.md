@@ -63,6 +63,6 @@ interface, name, or icon.
 - [ ] Confirm the privacy nutrition label is set to **Data Not Collected**
 - [x] Add an app icon
 - [x] Screenshots at 1320×2868 (6.9") in `docs/screenshots/` — note the Home counts are illustrative
-- [ ] Consider a dedicated support email; the policy currently lists a personal address
+- [x] Dedicated support email: getquiettexts@gmail.com
 - [ ] Category Utilities, age rating 4+, support URL set
 - [ ] Device-test once: enable the filter, have someone send a fundraising text and an OTP
