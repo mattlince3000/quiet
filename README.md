@@ -71,6 +71,11 @@ rule over reducing a weight.
 Test Lab in the app runs this same classifier: paste any message and see the
 verdict plus every rule that matched.
 
+## License
+
+MIT — see [LICENSE](LICENSE). The rules and corpus are meant to be read, copied,
+and argued with.
+
 ## Status
 
 Rules, corpus, and the three screens are done and tested. Device verification and
