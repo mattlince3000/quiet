@@ -22,6 +22,37 @@ struct OnboardingView: View {
             }
 
             Section {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("iOS will show you a warning that says the developer receives your messages, "
+                        + "including things like bank codes.")
+                    Text("That warning appears for every message filter app. iOS shows it because a "
+                        + "filter runs code on your texts, and iOS has no way to tell whether that "
+                        + "code sends anything anywhere.")
+                    Text("Quiet has no internet connection at all. Not limited — absent. There is no "
+                        + "networking code in the app, and the filter is not registered to send a "
+                        + "message anywhere, so it has no way to.")
+                        .fontWeight(.medium)
+                }
+                .font(.body)
+                .padding(.vertical, 2)
+
+                DisclosureGroup("How can I check that?") {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Every line of Quiet is public at github.com/mattlince3000/quiet. "
+                            + "Anyone can read what it does with a message.")
+                        Text("Test Lab, on the previous screen, shows you the whole decision for any "
+                            + "message you paste — the verdict and every rule that matched.")
+                        Text("Nothing is kept. Quiet stores your settings and a count of filtered "
+                            + "messages. Deleting the app removes all of it.")
+                    }
+                    .font(.subheadline)
+                    .padding(.vertical, 4)
+                }
+            } header: {
+                Text("Before you start")
+            }
+
+            Section {
                 ForEach(Array(Self.steps.enumerated()), id: \.offset) { index, step in
                     HStack(alignment: .firstTextBaseline, spacing: 12) {
                         Text("\(index + 1)")

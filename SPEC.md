@@ -21,6 +21,15 @@ Free iOS app that silences robo-campaign and fundraising spam texts (SMS / MMS /
 - Extensions do not run in the Simulator — device testing only. Do all logic in a Swift package so unit tests run on macOS without a device.
 - Tight memory/time budget in the extension: no third-party frameworks, no large tables, precompiled regexes, bounded input length.
 - User must enable us: Settings → Apps → Messages → Unknown & Spam → Text Message Filter → pick this app. The toggle may be absent on some carriers/regions; onboarding must handle "I don't see it."
+- **The consent gate is the biggest adoption risk.** On selecting a filter, iOS shows an unconditional
+  warning: "The developer of X will receive the text, attachments, and sender information in text
+  messages from senders not in your Contacts. Messages may include personal or sensitive information
+  like bank verification codes." It is shown for every filter app, cannot be suppressed by any
+  entitlement or manifest key, and iOS cannot distinguish an app with no network from one that uploads
+  everything. Onboarding must name this warning *before* sending the user to Settings and explain why
+  it appears — a user meeting it cold will abandon setup. The honest counter-claims are that we declare
+  no `ILMessageFilterExtensionNetworkURL` (so the only sanctioned off-device path does not exist for
+  us) and that the source is public.
 - iOS 26+ already has "Screen Unknown Senders" + built-in spam detection. Position this app as a stricter, fundraising-specific layer, not a replacement. Onboarding should tell users to turn *both* on.
 - Filtering doesn't apply to senders the user has replied to 3+ times.
 
