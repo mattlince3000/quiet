@@ -12,11 +12,16 @@ struct HomeView: View {
                     NavigationLink {
                         OnboardingView()
                     } label: {
-                        Label("Finish setting up", systemImage: "arrow.right.circle.fill")
+                        Label("How to turn Quiet on", systemImage: "arrow.right.circle.fill")
                             .font(.headline)
                     }
                 } footer: {
-                    Text("Quiet cannot filter anything until you turn it on in Settings. It takes about a minute.")
+                    // iOS exposes no way to ask whether we are the selected filter, so
+                    // "unconfirmed" and "not set up" look identical from in here. Say that,
+                    // rather than telling someone who did it correctly that they failed.
+                    Text("Already turned it on? Then you're done. iOS doesn't let an app check "
+                        + "whether it's the chosen filter, so Quiet can only confirm itself once "
+                        + "the first text from an unknown number arrives.")
                 }
             }
 
@@ -61,8 +66,10 @@ struct HomeView: View {
                 NavigationLink { TestLabView(config: settings.currentConfig) } label: {
                     Label("Test Lab", systemImage: "flask")
                 }
-                NavigationLink { OnboardingView() } label: {
-                    Label("How to turn Quiet on", systemImage: "questionmark.circle")
+                if settings.isProbablyEnabled {
+                    NavigationLink { OnboardingView() } label: {
+                        Label("How to turn Quiet on", systemImage: "questionmark.circle")
+                    }
                 }
             }
         }
@@ -77,12 +84,12 @@ private struct StatusRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: lastRun == nil ? "moon.zzz" : "checkmark.shield.fill")
+            Image(systemName: lastRun == nil ? "clock.badge.questionmark" : "checkmark.shield.fill")
                 .font(.title2)
                 .foregroundStyle(lastRun == nil ? Color.secondary : Color.accentColor)
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 2) {
-                Text(lastRun == nil ? "Not filtering yet" : "Filtering is on")
+                Text(lastRun == nil ? "Waiting for the first text" : "Filtering is on")
                     .font(.headline)
                 Text(subtitle)
                     .font(.subheadline)
@@ -93,7 +100,9 @@ private struct StatusRow: View {
     }
 
     private var subtitle: String {
-        guard let lastRun else { return "Turn Quiet on in Settings to get started." }
+        guard let lastRun else {
+            return "Quiet confirms itself the first time a number you don't know texts you."
+        }
         return "Last checked a message \(lastRun.formatted(.relative(presentation: .named)))."
     }
 }
