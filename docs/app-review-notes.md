@@ -44,7 +44,7 @@ explicit allow rules that run before any spam scoring, so they are never filtere
 **Privacy:** message text is held in memory only for the duration of a single filter callback
 and is never stored, logged, or transmitted. The app's shared container holds only a sensitivity
 setting, a boolean toggle, two counters, and two dates. Privacy manifests in both targets declare
-no tracking and no collected data. Privacy policy: <https://YOUR-GITHUB-USERNAME.github.io/quiet/>
+no tracking and no collected data. Privacy policy: <https://mattlince3000.github.io/quiet/>
 
 **Content neutrality (guideline 1.1):** Quiet is not partisan. The rules target fundraising and
 campaign solicitation patterns generally, and the corpus used to tune them contains messages from
@@ -58,9 +58,11 @@ interface, name, or icon.
 - [ ] Replace `com.you.quiet` / `com.you.quiet.filter` with real bundle IDs in `project.yml`
 - [ ] Set `DEVELOPMENT_TEAM` in `project.yml`, then `make gen`
 - [ ] Update the App Group identifier in `project.yml` and `Shared/AppGroupKeys.swift` to match
-- [ ] Publish `docs/` to GitHub Pages and put the real URL in the notes above and in the listing
+- [x] Publish `docs/` to GitHub Pages — live at <https://mattlince3000.github.io/quiet/>
+- [ ] Put that URL in the App Store Connect listing's Privacy Policy field
 - [ ] Confirm the privacy nutrition label is set to **Data Not Collected**
-- [ ] Add an app icon (`App/Assets.xcassets/AppIcon.appiconset` is a placeholder)
-- [ ] Screenshots at the sizes App Store Connect requests — Home, Test Lab, and Onboarding
+- [x] Add an app icon
+- [x] Screenshots at 1320×2868 (6.9") in `docs/screenshots/` — note the Home counts are illustrative
+- [ ] Consider a dedicated support email; the policy currently lists a personal address
 - [ ] Category Utilities, age rating 4+, support URL set
 - [ ] Device-test once: enable the filter, have someone send a fundraising text and an OTP
