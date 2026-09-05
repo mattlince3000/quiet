@@ -3,6 +3,19 @@ import SwiftUI
 /// SPEC §3: the three-step enable walkthrough, plus the "I don't see it"
 /// fallback. `App-prefs:` deep links are unreliable, so this opens the app's own
 /// Settings page and spells the rest out in words.
+/// A tight bullet, so the two-filter split reads as a list without shouting.
+private struct BulletLabel: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            configuration.icon
+                .font(.system(size: 6))
+                .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
+            configuration.title
+        }
+    }
+}
+
 struct OnboardingView: View {
     @Environment(\.openURL) private var openURL
 
@@ -72,6 +85,31 @@ struct OnboardingView: View {
             }
 
             Section {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("While you are on that screen, also switch on Screen Unknown Senders.")
+                        .fontWeight(.medium)
+                    Text("The two filters cover different things, and neither one covers everything:")
+                    Label(
+                        "Quiet catches fundraising and campaign texts sent as SMS — where nearly all of "
+                            + "them come from.",
+                        systemImage: "circle.fill"
+                    )
+                    Label(
+                        "Apple's filter catches general spam, and iMessages from people you don't know. "
+                            + "Quiet cannot see iMessages — Apple does not allow any app to.",
+                        systemImage: "circle.fill"
+                    )
+                }
+                .font(.body)
+                .labelStyle(BulletLabel())
+                .padding(.vertical, 2)
+            } header: {
+                Text("Turn on both")
+            } footer: {
+                Text("Together they cover far more than either one alone.")
+            }
+
+            Section {
                 Button {
                     if let url = URL(string: UIApplication.openSettingsURLString) {
                         openURL(url)
@@ -96,15 +134,6 @@ struct OnboardingView: View {
                                 + "your iPhone — the option can take a moment to appear."
                         )
                     }
-                    .font(.subheadline)
-                    .padding(.vertical, 4)
-                }
-                DisclosureGroup("Should I also use Apple's filter?") {
-                    Text(
-                        "Yes. Turn on Screen Unknown Senders in the same Settings screen. Apple's filter "
-                            + "catches general spam; Quiet adds a stricter layer for fundraising texts. "
-                            + "They work together."
-                    )
                     .font(.subheadline)
                     .padding(.vertical, 4)
                 }
