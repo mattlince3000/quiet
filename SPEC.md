@@ -151,7 +151,7 @@ Corpus tests are the contract: recall ≥ 95% on `spam.txt`, **zero** junk verdi
 ## 8. Path to the App Store
 
 1. **Apple Developer Program** ($99/yr, individual is fine; approval 1–2 days). Needs a Mac with current Xcode and a physical iPhone.
-2. **Bundle IDs**: `com.you.quiet` and `com.you.quiet.filter`; both with App Group `group.com.you.quiet`. Xcode automatic signing handles provisioning.
+2. **Bundle IDs**: `com.getquiettexts.quiet` and `com.getquiettexts.quiet.filter`; both with App Group `group.com.getquiettexts.quiet`. Xcode automatic signing handles provisioning.
 3. **Build & device test**: install, enable the filter in Settings, have a friend text you a fake "chip in $5" message and an OTP. Confirm the first lands in Junk and the second in the inbox.
 4. **TestFlight** to family (internal testers need no review; external testers need a light beta review).
 5. **App Store Connect listing**: name, subtitle, 3–5 screenshots at the required size (App Store Connect tells you which), description, keywords ("spam text filter, robotext, fundraising texts"), category Utilities, age 4+, support URL, **privacy policy URL** (required — a one-page GitHub Pages site saying "this app collects nothing" is enough).

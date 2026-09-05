@@ -55,9 +55,9 @@ interface, name, or icon.
 
 ## Pre-submission checklist
 
-- [ ] Replace `com.you.quiet` / `com.you.quiet.filter` with real bundle IDs in `project.yml`
-- [ ] Set `DEVELOPMENT_TEAM` in `project.yml`, then `make gen`
-- [ ] Update the App Group identifier in `project.yml` and `Shared/AppGroupKeys.swift` to match
+- [x] Bundle IDs: `com.getquiettexts.quiet` / `com.getquiettexts.quiet.filter`
+- [ ] Set `DEVELOPMENT_TEAM` in `project.yml` once enrollment is approved, then `make gen`
+- [x] App Group: `group.com.getquiettexts.quiet`
 - [x] Publish `docs/` to GitHub Pages — live at <https://mattlince3000.github.io/quiet/>
 - [ ] Put that URL in the App Store Connect listing's Privacy Policy field
 - [ ] Confirm the privacy nutrition label is set to **Data Not Collected**

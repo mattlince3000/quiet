@@ -8,7 +8,7 @@ import Foundation
 /// FilterCore, where `swift test` can assert them; these accessors are the only
 /// code that reads or writes the suite.
 public enum AppGroup {
-    public static let identifier = "group.com.you.quiet"
+    public static let identifier = "group.com.getquiettexts.quiet"
 
     /// The App Group suite, never the standard one: SPEC §6 keeps every
     /// cross-target read and write inside this container.
